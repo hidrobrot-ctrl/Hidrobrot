@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html data-filename="pages/PWADownload" data-linenumber="13" data-visual-selector-id="pages/PWADownload13" lang="es">
+<head data-filename="pages/PWADownload" data-linenumber="14" data-visual-selector-id="pages/PWADownload14">
+    <meta data-filename="pages/PWADownload" data-linenumber="15" data-visual-selector-id="pages/PWADownload15" charset="UTF-8">
+    <meta data-filename="pages/PWADownload" data-linenumber="16" data-visual-selector-id="pages/PWADownload16" name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta data-filename="pages/PWADownload" data-linenumber="17" data-visual-selector-id="pages/PWADownload17" name="mobile-web-app-capable" content="yes">
+    <meta data-filename="pages/PWADownload" data-linenumber="18" data-visual-selector-id="pages/PWADownload18" name="apple-mobile-web-app-capable" content="yes">
+    <meta data-filename="pages/PWADownload" data-linenumber="19" data-visual-selector-id="pages/PWADownload19" name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta data-filename="pages/PWADownload" data-linenumber="20" data-visual-selector-id="pages/PWADownload20" name="apple-mobile-web-app-title" content="HidroBrot">
+    <meta data-filename="pages/PWADownload" data-linenumber="21" data-visual-selector-id="pages/PWADownload21" name="theme-color" content="#10b981">
+    <title data-filename="pages/PWADownload" data-linenumber="22" data-visual-selector-id="pages/PWADownload22">HidroBrot Pro</title>
+    <link data-filename="pages/PWADownload" data-linenumber="23" data-visual-selector-id="pages/PWADownload23" rel="icon" href="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/68d57bddfe6420832b5e86bc/bf569cf21_HBlogosolo_Nero_AI_Background_Remover1.png">
+    <link data-filename="pages/PWADownload" data-linenumber="24" data-visual-selector-id="pages/PWADownload24" rel="apple-touch-icon" href="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/68d57bddfe6420832b5e86bc/bf569cf21_HBlogosolo_Nero_AI_Background_Remover1.png">
+    <link data-filename="pages/PWADownload" data-linenumber="25" data-visual-selector-id="pages/PWADownload25" rel="manifest" id="manifest-placeholder">
+    <style data-filename="pages/PWADownload" data-linenumber="26" data-visual-selector-id="pages/PWADownload26">
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body, html { width: 100%; height: 100%; overflow: hidden; }
+        iframe { width: 100%; height: 100%; border: none; }
+        #loader {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            z-index: 9999;
+            transition: opacity 0.5s;
+        }
+        #loader.hidden { opacity: 0; pointer-events: none; }
+        .logo {
+            width: 120px;
+            height: 120px;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        .text {
+            color: white;
+            font-family: system-ui;
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body data-filename="pages/PWADownload" data-linenumber="60" data-visual-selector-id="pages/PWADownload60">
+    <div data-filename="pages/PWADownload" data-linenumber="61" data-visual-selector-id="pages/PWADownload61" id="loader">
+        <img data-filename="pages/PWADownload" data-linenumber="62" data-visual-selector-id="pages/PWADownload62" class="logo" src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/68d57bddfe6420832b5e86bc/bf569cf21_HBlogosolo_Nero_AI_Background_Remover1.png" alt="HidroBrot">
+        <div data-filename="pages/PWADownload" data-linenumber="63" data-visual-selector-id="pages/PWADownload63" class="text">HidroBrot Pro</div>
+    </div>
+    <iframe data-filename="pages/PWADownload" data-linenumber="65" data-visual-selector-id="pages/PWADownload65" id="app" src="https://preview--aura-home-2b5e86bc.base44.app" allow="camera; microphone; geolocation; fullscreen"></iframe>
+    
+    <script data-filename="pages/PWADownload" data-linenumber="67" data-visual-selector-id="pages/PWADownload67">
+        // Inline manifest
+        const manifestData = {
+            "name": "HidroBrot Pro",
+            "short_name": "HidroBrot",
+            "description": "Sistema de cultivo hidropónico inteligente",
+            "start_url": "/",
+            "display": "standalone",
+            "background_color": "#10b981",
+            "theme_color": "#10b981",
+            "orientation": "portrait-primary",
+            "icons": [{
+                "src": "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/68d57bddfe6420832b5e86bc/bf569cf21_HBlogosolo_Nero_AI_Background_Remover1.png",
+                "sizes": "512x512",
+                "type": "image/png",
+                "purpose": "any maskable"
+            }]
+        };
+        const manifestBlob = new Blob([JSON.stringify(manifestData)], {type: 'application/json'});
+        const manifestURL = URL.createObjectURL(manifestBlob);
+        document.getElementById('manifest-placeholder').setAttribute('href', manifestURL);
+
+        // Inline Service Worker
+        if ('serviceWorker' in navigator) {
+            const swCode = `
+                const CACHE_NAME = 'hidrobrot-v1';
+                self.addEventListener('install', e => e.waitUntil(caches.open(CACHE_NAME)));
+                self.addEventListener('fetch', e => {
+                    e.respondWith(
+                        caches.match(e.request).then(r => r || fetch(e.request))
+                    );
+                });
+            `;
+            const swBlob = new Blob([swCode], {type: 'application/javascript'});
+            const swURL = URL.createObjectURL(swBlob);
+            navigator.serviceWorker.register(swURL).catch(err => console.error('SW error:', err));
+        }
+        
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').classList.add('hidden');
+            }, 1500);
+        });
+    </script>
+</body>
+</html>
